@@ -14,11 +14,19 @@
     <title>ID generator</title>
   </head>
   <body>
+    {% if request.user.is_anonymous %}
+    <div class="container">
+        {% block login %}
+        {% endblock %}
+    </div>
+    {%else%}
+    
     {% include 'includes/navbar.html' %}
     <div class="container">
         {% block content %}
         {% endblock %}
     </div>
+    
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -39,7 +47,7 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -8,6 +8,7 @@ from io import BytesIO
 # from .serializers import IdInfoSerializer
 # from rest_framework import permissions
 from .forms import IdInfoForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -19,7 +20,7 @@ from .forms import IdInfoForm
 #     serializer_class = IdInfoSerializer
 #     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
+@login_required()
 def home(request):
     qcb_ids = IdInfo.objects.all().order_by('-created', '-updated')
 
@@ -30,6 +31,7 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+@login_required()
 def add_id(request):
     form = IdInfoForm(request.POST or None, request.FILES or None)
     if request.method == "POST":
@@ -47,6 +49,7 @@ def add_id(request):
     return render(request, 'add_id.html', context)
 
 
+@login_required()
 def update_id(request, pk):
     instance = get_object_or_404(IdInfo, pk=pk)
     print(instance.first_name)
@@ -71,6 +74,7 @@ def update_id(request, pk):
     return render(request, 'id_details.html', context)
 
 
+@login_required()
 def delete(request, pk):
     instance = get_object_or_404(IdInfo, pk=pk)
     if request.method == "POST":
