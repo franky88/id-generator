@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'idgen:home' %}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{title|title}}</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-header">
+                <strong>{{title|title}}</strong>
+            </div>
+            <form method="POST" class="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                {{form|crispy}}
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <strong>ID preview</strong>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="id-container" style="background-image: url({% static 'bg.png' %}); background-repeat: no-repeat; background-size: 306px 486px;">
+                            <div class="id-header">
+                                <div class="company-name">
+                                    <h4>QCB</h4>
+                                    <p>Invitec Corp.</p>
+                                </div>
+                                <div class="logo-icon">
+                                    <img src="{% static 'logo icon.png' %}" alt="logoicon">
+                                </div>
+                                <div class="id-image">
+                                    <img src="{{ instance.image.url }}" alt="">
+                                </div>
+                            </div>
+                            <div class="id-content">
+                                <h5 class="id-f-name">{{ instance.first_name|upper }}</h5>
+                                <div class="id-l-name">
+                                    <h4>{{ instance.last_name|upper }}</h4>
+                                </div>
+                                <div class="id-position">
+                                    <h4>{{ instance.position|title }}</h4>
+                                    <p>
+                                        Position
+                                    </p>
+                                </div>
+                                <div class="id-number">
+                                    <small><strong>ID No | {{ instance.id_number|upper }}</strong></small> <br>
+                                    {% if instance.signature %}
+                                    <img class="signature" src="{{ instance.signature.url }}" alt="">
+                                    {% else %}
+                                    <p>No signature please add</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="id-container">
+                            <div class="id-header-b">
+                                <div class="personal-info">
+                                    <h5>Personal Information</h5>
+                                    <p>
+                                        Birth date: <u>{{instance.birth_date}}</u>  <br>
+                                        Blood type: <u>{{instance.blood_type}}</u> <br>
+                                        Contact: <u>{{instance.contact}}</u>
+                                    </p>
+                                    <h5>Emergency contact</h5>
+                                    <p>
+                                        Name: <u>{{instance.emergency_contact_name|title}}</u>  <br>
+                                        Contact: <u>{{instance.contact_number}}</u> <br>
+                                        Address: <u>{{instance.address|title}}</u>
+                                    </p>
+                                </div>
+                                <div class="terms">
+                                    <div class="qr">
+                                        <div class="div">
+                                            {{svg|safe}}
+                                        </div>
+                                        <div>
+                                            <img class="small-logo" width="100%" src="{% static 'logo.png' %}" alt="">
+                                        </div>
+                                    </div>
+                                    <p>
+                                        This identification card certifies that
+                                        the bearer is a legal employee of
+                                        QCB Invitec Corp., is non-transferable.
+
+
+                                        If found, please return this 
+                                        identification card to the appropriate
+                                        department. or contact <b>{{instance.contact}}</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-outline-info btn-sm" href="{% url 'idgen:view' pk=instance.pk %}">View ID</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

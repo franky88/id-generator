@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'idgen:home' %}">Home</a></li>
+      <!-- <li class="breadcrumb-item active" aria-current="page">{{title|title}}</li> -->
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-sm-12 mt-3 mb-3">
+        <h1>QCB Invitec Corporation Identifications</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9">
+        <div class="card">
+            <div class="card-header">
+                <strong>Personel list</strong>
+                <a href="{% url 'idgen:add' %}" class="btn btn-primary btn-sm float-right">Add ID</a>
+            </div>
+            <div class="card-body">
+                
+                <table class="table table-hover table-sm" id="qcb_id">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID Number</th>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name in ids %}
+                        <tr>
+                            <td>{{ name.id_number|upper }}</td>
+                            <td>{{ name.full_name|title }}</td>
+                            <td>{{ name.position|title }}</td>
+                            <td>
+                                <a class="btn btn-outline-success btn-sm" href="{% url 'idgen:details' pk=name.pk %}">Edit</a>
+                                <a class="btn btn-outline-info btn-sm" href="{% url 'idgen:view' pk=name.pk %}">View</a>
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'idgen:delete' pk=name.pk %}">X</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-sm-3">
+        <div class="card">
+            <div class="card-header">
+                <strong>Latest Activities</strong>
+            </div>
+            <div class="card-body">
+                {% for act in ids %}
+                <div>
+                    <p>
+                        {{act.full_name|title}} <br>
+                        <small class="text-muted">Created by: {{act.user|title}}</small>
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'idgen:home' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{title|title}}</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-xl-8 col-lg-7">
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                {{title|title}}
+            </div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="card-body">
+                    <p>Are you sure you want to delete <strong>{{ instance.full_name|title }}</strong>?</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-secondary btn-sm">Cancel</a>
+                    <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
