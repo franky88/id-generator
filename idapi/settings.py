@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-5-3@ai1%#+15-nef2ttp+%=&_04tp9ir&kj%((%aq*i9k&3b-b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+BASE_URL = "http://localhost:8000"
 
 
 # Application definition
