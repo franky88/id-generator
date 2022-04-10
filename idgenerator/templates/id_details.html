@@ -55,12 +55,14 @@
                                     <h4>{{ instance.position|title }}</h4>
                                 </div>
                                 <div class="id-number">
-                                    <small><strong>ID No | {{ instance.id_number|upper }}</strong></small> <br>
                                     {% if instance.signature %}
                                     <img class="signature" src="{{ instance.signature.url }}" alt="">
                                     {% else %}
                                     <p>No signature please add</p>
                                     {% endif %}
+                                    <div style="height: 40px; background-color: aquamarine; background-image: url('{{instance.barcode.url}}'); background-repeat: no-repeat; background-size: cover;">
+                                    </div>
+                                    <small>ID No. {{instance.id_number}}</small>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +90,16 @@
                                             {{svg|safe}}
                                         </div>
                                         <div>
-                                            <img class="small-logo" width="100%" src="{% static 'logo.png' %}" alt="">
+                                            <img class="small-logo" width="100%" src="{% static 'logo.png' %}" alt="logo">
+                                            <p style="margin-top: 3px;">
+                                                3/F
+                                                QCB Tower No. 12 8
+                                                Ma timtiman St. Central
+                                                District, Diliman Quezon
+                                                City, Philippines, 1100 <br> <br>
+                                                <b>Tel. No.: (632) 8441 0389</b>
+                                                <b>marketing@qcbinvitec.com</b>
+                                            </p>
                                         </div>
                                     </div>
                                     <p>

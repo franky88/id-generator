@@ -1,10 +1,15 @@
+from csv import writer
 from email.policy import default
 from django.db import models
+from django.core.files import File
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
-from .utils import image_resize
+from .utils import image_resize, barcode_gen
 import uuid
+import barcode
+from barcode.writer import ImageWriter
+from io import BytesIO
 # Create your models here.
 
 
@@ -14,7 +19,7 @@ def image_file_location(instance, filename):
 
 class IdInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-    id_number = models.CharField(max_length=8, blank=True, null=True)
+    id_number = models.CharField(max_length=13, blank=True, null=True)
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     position = models.CharField(max_length=60)
@@ -29,6 +34,7 @@ class IdInfo(models.Model):
         upload_to=image_file_location, help_text='Please upload square image')
     signature = models.ImageField(
         upload_to=image_file_location, help_text='Please upload square image', blank=True, null=True)
+    barcode = models.ImageField(upload_to=image_file_location, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -40,17 +46,24 @@ class IdInfo(models.Model):
         return self.full_name().title()
 
     def save(self, *args, **kwargs):
-        image_resize(self.image, 512, 512)
-        super().save(*args, **kwargs)
+        # image_resize(self.image, 512, 512)
+        # barcode
+        # barcode_gen(self.id_number, self.barcode)
+        return super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=IdInfo)
 def post_save_id_number(sender, instance, created, *args, **kwargs):
     if created:
-        instance.id_number = str(uuid.uuid4()).replace('-', '')[:8]
+        UUID = uuid.uuid1()
+        ean = UUID.int
+        text_id = str(ean)[:13]
+        instance.id_number = int(text_id)
+        # instance.save()
+        barcode_gen(instance.id_number, instance.barcode)
         instance.save()
 
 
-# @receiver(pre_save, sender=IdInfo)
-# def pre_save_image_size(sender, instance, *args, **kwargs):
-#     image_resize(instance.image, 512, 512)
+@receiver(pre_save, sender=IdInfo)
+def pre_save_image(sender, instance, *args, **kwargs):
+    image_resize(instance.image, 512, 512)

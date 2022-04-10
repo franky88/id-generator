@@ -4,6 +4,8 @@ from django.contrib import messages
 import qrcode
 import qrcode.image.svg
 from io import BytesIO
+from barcode import Code128
+from barcode.writer import ImageWriter
 # from rest_framework import viewsets
 # from .serializers import IdInfoSerializer
 # from rest_framework import permissions
@@ -52,7 +54,6 @@ def add_id(request):
 @login_required()
 def update_id(request, pk):
     instance = get_object_or_404(IdInfo, pk=pk)
-    print(instance.first_name)
     form = IdInfoForm(request.POST or None,
                       request.FILES or None, instance=instance)
     factory = qrcode.image.svg.SvgImage

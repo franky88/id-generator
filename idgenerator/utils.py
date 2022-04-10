@@ -2,6 +2,8 @@ from django.core.files import File
 from pathlib import Path
 from PIL import Image
 from io import BytesIO
+import barcode
+from barcode.writer import ImageWriter
 
 image_types = {
     "jpg": "JPEG",
@@ -34,3 +36,11 @@ def image_resize(image, width, height):
         file_object = File(buffer)
         # Save the new resized file as usual, which will save to S3 using django-storages
         image.save(img_filename, file_object)
+
+
+def barcode_gen(text, my_code):
+    EAN = barcode.get_barcode_class('ean13')
+    ean = EAN(str(text), writer=ImageWriter())
+    buffer = BytesIO()
+    ean.write(buffer)
+    my_code.save(str(text)+".png", File(buffer), save=False)

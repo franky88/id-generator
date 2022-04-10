@@ -69,13 +69,10 @@
     line-height: .6;
 }
 .id-number {
-    margin-top: 20px;
+    margin-top: -10px;
 }
 .id-number small {
     line-height: .5;
-    border: 1px solid #222;
-    padding: 5px;
-    border-radius: 15px;
 }
 .personal-info {
     color: white;
